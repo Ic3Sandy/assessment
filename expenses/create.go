@@ -17,9 +17,9 @@ func CreateExpense(c echo.Context) error {
 		VALUES ($1, $2, $3, $4);
 	`, expense.Title, expense.Amount, expense.Note, pq.Array(expense.Tags))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	return c.JSON(http.StatusOK, ExpenseResponse{
+	return c.JSON(http.StatusCreated, ExpenseResponse{
 		Title:  expense.Title,
 		Amount: expense.Amount,
 		Note:   expense.Note,

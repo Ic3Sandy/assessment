@@ -11,7 +11,7 @@ func UpdateExpense(c echo.Context) error {
 	id := c.Param("id")
 	expense := new(Expense)
 	if err := c.Bind(expense); err != nil {
-		return c.String(http.StatusBadRequest, "bad request")
+		return c.String(http.StatusBadRequest, err.Error())
 	}
 	_, err := db.Exec(`
 			UPDATE expenses
