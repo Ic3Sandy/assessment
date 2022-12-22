@@ -2,6 +2,7 @@ package expenses
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo"
 	"github.com/lib/pq"
@@ -21,7 +22,13 @@ func UpdateExpense(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, ExpenseResponse{
+
+	intVar, err := strconv.Atoi(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, Expense{
+		ID:     intVar,
 		Title:  expense.Title,
 		Amount: expense.Amount,
 		Note:   expense.Note,
