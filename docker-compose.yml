@@ -9,6 +9,12 @@ services:
     volumes:
       - ./postgres:/var/lib/postgresql/data
 
+  postgres-test:
+    image: postgres:13.9-alpine3.17
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: expense-tracking-db
+
   go:
     image: golang:1.19.4-alpine3.17
     working_dir: /app
@@ -23,5 +29,6 @@ services:
       - CGO_ENABLED=0
       - PORT=2565
       - DATABASE_URL=postgres://postgres:iOPXeR1wYsEIybr4lTUrtbBy@postgres:5432/expense-tracking-db?sslmode=disable
+      - DATABASE_URL_TEST=postgres://postgres:postgres@postgres-test:5432/expense-tracking-db?sslmode=disable
     depends_on:
       - postgres
