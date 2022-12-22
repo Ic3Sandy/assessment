@@ -24,13 +24,12 @@ func TestCreateExpense(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	defer db.Close()
-	mock.ExpectExec("INSERT INTO expenses").
-		WillReturnResult(sqlmock.NewResult(1, 1))
-	mock.ExpectCommit()
+	mock.ExpectQuery("INSERT INTO expenses").
+		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
 	SetDB(db)
 
 	if assert.NoError(t, CreateExpense(c)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
-		assert.Equal(t, dataJSON+"\n", rec.Body.String())
+		assert.Equal(t, `{"id":1,"title":"test","amount":100,"note":"test","tags":["test"]}`+"\n", rec.Body.String())
 	}
 }
