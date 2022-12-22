@@ -30,8 +30,10 @@ func main() {
 	fmt.Println("Please use server.go for main file")
 	fmt.Println("start at port:", os.Getenv("PORT"))
 
-	db = ConnectAndCreateTable()
+	tableName := "expenses"
+	db = ConnectAndCreateTable(tableName)
 	expenses.SetDB(db)
+	expenses.SetTableName(tableName)
 	defer db.Close()
 
 	e := echo.New()

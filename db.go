@@ -7,7 +7,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func ConnectAndCreateTable() *sql.DB {
+func ConnectAndCreateTable(tableName string) *sql.DB {
 	connStr := os.Getenv("DATABASE_URL")
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -19,7 +19,7 @@ func ConnectAndCreateTable() *sql.DB {
 	}
 
 	_, err = db.Exec(`
-		CREATE TABLE IF NOT EXISTS expenses (
+		CREATE TABLE IF NOT EXISTS ` + tableName + ` (
 			id SERIAL PRIMARY KEY,
 			title TEXT,
 			amount FLOAT,

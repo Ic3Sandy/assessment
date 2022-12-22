@@ -3,9 +3,14 @@ package expenses
 import "database/sql"
 
 var db *sql.DB
+var tableName string
 
 func SetDB(d *sql.DB) {
 	db = d
+}
+
+func SetTableName(t string) {
+	tableName = t
 }
 
 type Expense struct {
