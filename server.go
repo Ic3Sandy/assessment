@@ -16,6 +16,16 @@ import (
 
 var db *sql.DB
 
+func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		key := c.Request().Header.Get("Authorization")
+		if key != os.Getenv("AUTHORIZATION_KEY") {
+			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid key")
+		}
+		return next(c)
+	}
+}
+
 func main() {
 	fmt.Println("Please use server.go for main file")
 	fmt.Println("start at port:", os.Getenv("PORT"))
@@ -25,7 +35,7 @@ func main() {
 	defer db.Close()
 
 	e := echo.New()
-	e.GET("/expenses", expenses.GetExpenses)
+	e.GET("/expenses", expenses.GetExpenses, AuthMiddleware)
 	e.GET("/expenses/:id", expenses.GetExpensesById)
 	e.POST("/expenses", expenses.CreateExpense)
 	e.PUT("/expenses/:id", expenses.UpdateExpense)
