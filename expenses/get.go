@@ -56,7 +56,7 @@ func GetExpensesById(c echo.Context) error {
 	var expense Expense
 	var tags []string
 	if err := row.Scan(&expense.ID, &expense.Title, &expense.Amount, &expense.Note, (*pq.StringArray)(&tags)); err != nil {
-		return c.JSON(http.StatusInternalServerError, "Expense not found!")
+		return c.JSON(http.StatusBadRequest, "Expense not found!")
 	}
 	expense.Tags = tags
 	return c.JSON(http.StatusOK, expense)
