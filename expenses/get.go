@@ -10,7 +10,7 @@ import (
 func GetExpenses(c echo.Context) error {
 	rows, err := db.Query(`
 			SELECT id, title, amount, note, tags
-			FROM expenses
+			FROM ` + tableName + `
 			ORDER BY id;
 		`)
 	if err != nil {
@@ -50,7 +50,7 @@ func GetExpensesById(c echo.Context) error {
 	id := c.Param("id")
 	row := db.QueryRow(`
 			SELECT id, title, amount, note, tags
-			FROM expenses
+			FROM `+tableName+`
 			WHERE id = $1;
 		`, id)
 	var expense Expense

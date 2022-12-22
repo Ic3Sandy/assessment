@@ -1,0 +1,39 @@
+services:
+
+  postgres:
+    image: postgres:13.9-alpine3.17
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: expense-tracking-db
+
+  integration-test:
+    image: golang:1.19.4-alpine3.17
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    command: sh -c  "sleep 3 && go test -v --tags=integration"
+    volumes:
+      - ./:/app
+    environment:
+      - AUTHORIZATION_KEY=November 10, 2009
+      - CGO_ENABLED=0
+      - PORT=2565
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/expense-tracking-db?sslmode=disable
+    depends_on:
+      - postgres
+
+  unit-test:
+    image: golang:1.19.4-alpine3.17
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    command: sh -c "sleep 3 && go test -v ./..."
+    volumes:
+      - ./:/app
+    environment:
+      - AUTHORIZATION_KEY=November 10, 2009
+      - CGO_ENABLED=0
+      - PORT=2565
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/expense-tracking-db?sslmode=disable
+    depends_on:
+      - postgres

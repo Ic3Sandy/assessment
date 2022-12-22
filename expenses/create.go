@@ -13,7 +13,7 @@ func CreateExpense(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "bad request")
 	}
 	row := db.QueryRow(
-		`INSERT INTO expenses (title, amount, note, tags) VALUES ($1, $2, $3, $4) RETURNING id`,
+		`INSERT INTO `+tableName+` (title, amount, note, tags) VALUES ($1, $2, $3, $4) RETURNING id`,
 		expense.Title, expense.Amount, expense.Note, pq.Array(expense.Tags),
 	)
 	err := row.Scan(&expense.ID)

@@ -15,7 +15,7 @@ func UpdateExpense(c echo.Context) error {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 	_, err := db.Exec(`
-			UPDATE expenses
+			UPDATE `+tableName+`
 			SET title = $1, amount = $2, note = $3, tags = $4
 			WHERE id = $5;
 		`, expense.Title, expense.Amount, expense.Note, pq.Array(expense.Tags), id)

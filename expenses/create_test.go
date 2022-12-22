@@ -27,6 +27,7 @@ func TestCreateExpense(t *testing.T) {
 	mock.ExpectQuery("INSERT INTO expenses").
 		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
 	SetDB(db)
+	SetTableName("expenses")
 
 	if assert.NoError(t, CreateExpense(c)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
