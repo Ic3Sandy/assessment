@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"strings"
 	"testing"
 
@@ -17,7 +16,6 @@ import (
 )
 
 func TestIntegrationCreateExpense(t *testing.T) {
-	os.Setenv("DATABASE_URL", os.Getenv("DATABASE_URL_TEST"))
 	tableName := "test_create_expense"
 	db := ConnectAndCreateTable(tableName)
 	defer db.Close()
@@ -43,7 +41,6 @@ func TestIntegrationCreateExpense(t *testing.T) {
 }
 
 func TestIntegrationGetExpenses(t *testing.T) {
-	os.Setenv("DATABASE_URL", os.Getenv("DATABASE_URL_TEST"))
 	tableName := "test_get_expenses"
 	db := ConnectAndCreateTable(tableName)
 	defer db.Close()
@@ -71,7 +68,6 @@ func TestIntegrationGetExpenses(t *testing.T) {
 }
 
 func TestIntegrationGetExpensesById(t *testing.T) {
-	os.Setenv("DATABASE_URL", os.Getenv("DATABASE_URL_TEST"))
 	tableName := "test_get_expenses_by_id"
 	db := ConnectAndCreateTable(tableName)
 	defer db.Close()
@@ -101,7 +97,6 @@ func TestIntegrationGetExpensesById(t *testing.T) {
 }
 
 func TestIntegrationUpdateExpense(t *testing.T) {
-	os.Setenv("DATABASE_URL", os.Getenv("DATABASE_URL_TEST"))
 	tableName := "test_update_expense"
 	db := ConnectAndCreateTable(tableName)
 	defer db.Close()
