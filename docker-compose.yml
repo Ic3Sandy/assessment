@@ -26,6 +26,7 @@ services:
     volumes:
       - ./:/app
     environment:
+      - AUTHORIZATION_KEY=November 10, 2009
       - CGO_ENABLED=0
       - PORT=2565
       - DATABASE_URL=postgres://postgres:iOPXeR1wYsEIybr4lTUrtbBy@postgres:5432/expense-tracking-db?sslmode=disable
