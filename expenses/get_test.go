@@ -28,6 +28,7 @@ func TestGetExpenses(t *testing.T) {
 		AddRow(1, "test", 100, "test", pq.Array([]string{"test"}))
 	mock.ExpectQuery("SELECT id, title, amount, note, tags FROM expenses").WillReturnRows(rows)
 	SetDB(db)
+	SetTableName("expenses")
 
 	if assert.NoError(t, GetExpenses(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)

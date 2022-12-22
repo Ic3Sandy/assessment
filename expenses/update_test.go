@@ -29,6 +29,7 @@ func TestUpdateExpense(t *testing.T) {
 	defer db.Close()
 	mock.ExpectExec("UPDATE expenses").WillReturnResult(sqlmock.NewResult(1, 1))
 	SetDB(db)
+	SetTableName("expenses")
 
 	if assert.NoError(t, UpdateExpense(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
