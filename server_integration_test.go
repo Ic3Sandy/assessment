@@ -1,3 +1,5 @@
+//go:build integration
+
 package main
 
 import (
@@ -14,10 +16,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateExpense(t *testing.T) {
+func TestIntegrationCreateExpense(t *testing.T) {
 	os.Setenv("DATABASE_URL", os.Getenv("DATABASE_URL_TEST"))
-	db := ConnectAndCreateTable()
+	tableName := "test_create_expense"
+	db := ConnectAndCreateTable(tableName)
+	defer db.Close()
 	expenses.SetDB(db)
+	expenses.SetTableName(tableName)
 
 	dataJSON := `{"title":"test-title","amount":100,"note":"test-note","tags":["test-tags"]}`
 	e := echo.New()
@@ -37,13 +42,15 @@ func TestCreateExpense(t *testing.T) {
 	}
 }
 
-func TestGetExpenses(t *testing.T) {
+func TestIntegrationGetExpenses(t *testing.T) {
 	os.Setenv("DATABASE_URL", os.Getenv("DATABASE_URL_TEST"))
-	db := ConnectAndCreateTable()
+	tableName := "test_get_expenses"
+	db := ConnectAndCreateTable(tableName)
+	defer db.Close()
 	expenses.SetDB(db)
+	expenses.SetTableName(tableName)
 
-	// insert dummy data
-	db.Exec("INSERT INTO expenses (title, amount, note, tags) VALUES ($1, $2, $3, $4)",
+	db.Exec("INSERT INTO "+tableName+" (title, amount, note, tags) VALUES ($1, $2, $3, $4)",
 		"test-title", 100, "test-note", pq.Array([]string{"test-tags"}))
 
 	e := echo.New()
@@ -63,12 +70,15 @@ func TestGetExpenses(t *testing.T) {
 	}
 }
 
-func TestGetExpensesById(t *testing.T) {
+func TestIntegrationGetExpensesById(t *testing.T) {
 	os.Setenv("DATABASE_URL", os.Getenv("DATABASE_URL_TEST"))
-	db := ConnectAndCreateTable()
+	tableName := "test_get_expenses_by_id"
+	db := ConnectAndCreateTable(tableName)
+	defer db.Close()
 	expenses.SetDB(db)
+	expenses.SetTableName(tableName)
 
-	db.Exec("INSERT INTO expenses (title, amount, note, tags) VALUES ($1, $2, $3, $4)",
+	db.Exec("INSERT INTO "+tableName+" (title, amount, note, tags) VALUES ($1, $2, $3, $4)",
 		"test-title", 100, "test-note", pq.Array([]string{"test-tags"}))
 
 	e := echo.New()
@@ -90,12 +100,15 @@ func TestGetExpensesById(t *testing.T) {
 	}
 }
 
-func TestUpdateExpense(t *testing.T) {
+func TestIntegrationUpdateExpense(t *testing.T) {
 	os.Setenv("DATABASE_URL", os.Getenv("DATABASE_URL_TEST"))
-	db := ConnectAndCreateTable()
+	tableName := "test_update_expense"
+	db := ConnectAndCreateTable(tableName)
+	defer db.Close()
 	expenses.SetDB(db)
+	expenses.SetTableName(tableName)
 
-	db.Exec("INSERT INTO expenses (title, amount, note, tags) VALUES ($1, $2, $3, $4)",
+	db.Exec("INSERT INTO "+tableName+" (title, amount, note, tags) VALUES ($1, $2, $3, $4)",
 		"test-title", 100, "test-note", pq.Array([]string{"test-tags"}))
 
 	dataJSON := `{"title":"update-title","amount":123,"note":"update-note","tags":["update-tags"]}`
